@@ -1,3 +1,4 @@
+Route::get('/ping', fn () => 'pong-' . now());
 <?php
 
 use Illuminate\Support\Facades\Route;
