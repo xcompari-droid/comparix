@@ -1,25 +1,15 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-<<<<<<< HEAD
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Comparix</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head
-=======
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Comparix</title>
-  @vite(['resources/css/app.css','resources/js/app.js'])
 </head>
 <body class="antialiased">
-  <div style="max-width:960px;margin:40px auto;font-family:system-ui,-apple-system,Segoe UI,Roboto">
-    <h1 style="margin-bottom:12px">Comparix</h1>
-    <p>Site-ul este online ✅ — ai înlocuit pagina Laravel de demo.</p>
-  </div>
+    <div style="max-width: 960px; margin: 40px auto; font-family: system-ui, -apple-system, Segoe UI, Roboto;">
+        <h1 style="margin-bottom: 12px;">Comparix</h1>
+        <p>Site-ul este online ✅ — ai înlocuit pagina Laravel de demo.</p>
+    </div>
 </body>
 </html>
-
-
->>>>>>> bd15c8164832dd0e7c621d30dce25bd6ccc9367e
