@@ -6,10 +6,10 @@
     <title>Comparix</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="antialiased">
-    <div style="max-width: 960px; margin: 40px auto; font-family: system-ui, -apple-system, Segoe UI, Roboto;">
-        <h1 style="margin-bottom: 12px;">Comparix</h1>
-        <p>Site-ul este online ✅ — ai înlocuit pagina Laravel de demo.</p>
+<body class="antialiased" style="font-family: system-ui, -apple-system, Segoe UI, Roboto;">
+    <div style="max-width:960px;margin:40px auto">
+        <h1 style="margin-bottom:12px">Comparix</h1>
+        <p>Site-ul este online ✅ — pagina Laravel de demo a fost înlocuită.</p>
     </div>
 </body>
 </html>
