@@ -14,6 +14,7 @@ class Category extends Model
     protected $fillable = [
         'name',
         'slug',
+        'description',
         'icon',
         'parent_id',
     ];
@@ -40,5 +41,13 @@ class Category extends Model
     public function productTypes(): HasMany
     {
         return $this->hasMany(ProductType::class);
+    }
+
+    /**
+     * Get the products in this category.
+     */
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
     }
 }
