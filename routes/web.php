@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ComparisonController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -22,6 +23,7 @@ Route::get('/health', fn() => response()->json(['ok' => true, 'time' => now()], 
 // Frontend routes
 Route::get('/categorii', [CategoryController::class, 'index'])->name('categories.index');
 Route::get('/categorii/{slug}', [CategoryController::class, 'show'])->name('categories.show');
+Route::get('/produse/{id}', [ProductController::class, 'show'])->name('products.show');
 Route::get('/compara', [ComparisonController::class, 'compare'])->name('compare');
 Route::get('/oferta/{id}', [ComparisonController::class, 'redirect'])->name('offer.redirect');
 

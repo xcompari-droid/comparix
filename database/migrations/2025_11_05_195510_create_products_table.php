@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('mpn')->nullable()->index();
             $table->string('ean')->nullable()->index();
             $table->text('short_desc')->nullable();
+            $table->string('image_url')->nullable();
             $table->decimal('score', 5, 2)->default(0);
             $table->timestamps();
             

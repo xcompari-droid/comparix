@@ -21,6 +21,7 @@ class Product extends Model implements HasMedia
         'mpn',
         'ean',
         'short_desc',
+        'image_url',
         'score',
     ];
 

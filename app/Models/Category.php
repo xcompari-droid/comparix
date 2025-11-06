@@ -42,12 +42,4 @@ class Category extends Model
     {
         return $this->hasMany(ProductType::class);
     }
-
-    /**
-     * Get the products in this category.
-     */
-    public function products(): HasMany
-    {
-        return $this->hasMany(Product::class);
-    }
 }

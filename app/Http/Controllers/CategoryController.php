@@ -10,7 +10,9 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::withCount('products')->get();
+        $categories = Category::withCount(['productTypes as products_count' => function ($query) {
+            $query->join('products', 'product_types.id', '=', 'products.product_type_id');
+        }])->get();
         
         return view('categories.index', compact('categories'));
     }
@@ -19,8 +21,10 @@ class CategoryController extends Controller
     {
         $category = Category::where('slug', $slug)->firstOrFail();
         
-        $products = Product::where('category_id', $category->id)
-            ->with(['offers', 'category'])
+        $products = Product::whereHas('productType', function ($query) use ($category) {
+            $query->where('category_id', $category->id);
+        })
+            ->with(['offers', 'productType.category'])
             ->paginate(12);
         
         return view('categories.show', compact('category', 'products'));

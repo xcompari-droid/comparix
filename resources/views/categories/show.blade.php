@@ -56,8 +56,19 @@
                     </div>
 
                     <div class="p-6">
+                        <!-- Product Image -->
+                        @if($product->image_url)
+                            <div class="mb-4">
+                                <img src="{{ $product->image_url }}" 
+                                     alt="{{ $product->name }}" 
+                                     class="w-full h-48 object-contain">
+                            </div>
+                        @endif
+
                         <h3 class="text-lg font-semibold text-gray-900 mb-2">
-                            {{ $product->name }}
+                            <a href="{{ route('products.show', $product->id) }}" class="hover:text-cyan-600">
+                                {{ $product->name }}
+                            </a>
                         </h3>
                         
                         @if($product->brand)

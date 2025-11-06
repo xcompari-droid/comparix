@@ -82,10 +82,15 @@
                                 Specificație
                             </th>
                             @foreach($products as $product)
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th class="px-6 py-3 text-left">
+                                    @if($product->image_url)
+                                        <img src="{{ $product->image_url }}" 
+                                             alt="{{ $product->name }}" 
+                                             class="w-32 h-32 object-contain mx-auto mb-3">
+                                    @endif
                                     <div class="font-semibold text-gray-900 text-sm">{{ $product->name }}</div>
                                     @if($product->brand)
-                                        <div class="text-gray-500 font-normal">{{ $product->brand }}</div>
+                                        <div class="text-gray-500 font-normal text-xs">{{ $product->brand }}</div>
                                     @endif
                                 </th>
                             @endforeach
