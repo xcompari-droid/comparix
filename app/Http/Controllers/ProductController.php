@@ -18,6 +18,15 @@ class ProductController extends Controller
             'productType.category'
         ])->findOrFail($id);
 
-        return view('products.show', compact('product'));
+        // Get similar products from same product type
+        $similarProducts = Product::where('product_type_id', $product->product_type_id)
+            ->where('id', '!=', $product->id)
+            ->with(['offers' => function($query) {
+                $query->where('in_stock', true)->orderBy('price', 'asc');
+            }])
+            ->limit(4)
+            ->get();
+
+        return view('products.show', compact('product', 'similarProducts'));
     }
 }

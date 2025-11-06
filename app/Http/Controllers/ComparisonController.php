@@ -18,7 +18,7 @@ class ComparisonController extends Controller
         $productIds = is_array($ids) ? $ids : explode(',', $ids);
         
         $products = Product::whereIn('id', $productIds)
-            ->with(['offers', 'specValues.specKey', 'category'])
+            ->with(['offers', 'specValues.specKey', 'productType.category'])
             ->get();
         
         // Determine winner (cheapest product)

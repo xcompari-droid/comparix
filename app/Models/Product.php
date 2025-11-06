@@ -34,18 +34,30 @@ class Product extends Model implements HasMedia
      */
     public function toSearchableArray(): array
     {
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'brand' => $this->brand,
-            'category' => $this->productType->category->name ?? null,
-            'price_min' => $this->offers()->min('price'),
-            'rating' => $this->score,
-            'specs' => $this->specValues->mapWithKeys(function ($specValue) {
-                return [$specValue->specKey->name => $specValue->value_string ?? $specValue->value_number ?? $specValue->value_bool];
-            })->toArray(),
-            'popularity' => $this->affiliateClicks()->count(),
-        ];
+        try {
+            $this->loadMissing(['productType.category', 'specValues.specKey', 'offers', 'affiliateClicks']);
+            
+            return [
+                'id' => $this->id,
+                'name' => $this->name,
+                'brand' => $this->brand,
+                'category' => optional(optional($this->productType)->category)->name ?? null,
+                'price_min' => $this->offers->min('price') ?? 0,
+                'rating' => $this->score,
+                'specs' => $this->specValues->mapWithKeys(function ($specValue) {
+                    return [optional($specValue->specKey)->name ?? 'unknown' => $specValue->value_string ?? $specValue->value_number ?? $specValue->value_bool];
+                })->toArray(),
+                'popularity' => $this->affiliateClicks->count(),
+            ];
+        } catch (\Exception $e) {
+            \Log::error('Scout indexing error for Product #' . $this->id . ': ' . $e->getMessage());
+            // Fallback to basic data if relationships fail
+            return [
+                'id' => $this->id,
+                'name' => $this->name,
+                'brand' => $this->brand,
+            ];
+        }
     }
 
     /**
@@ -78,6 +90,38 @@ class Product extends Model implements HasMedia
     public function affiliateClicks(): HasMany
     {
         return $this->hasMany(AffiliateClick::class);
+    }
+
+    /**
+     * Get the reviews for the product.
+     */
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    /**
+     * Get the favorites for the product.
+     */
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(Favorite::class);
+    }
+
+    /**
+     * Get the price alerts for the product.
+     */
+    public function priceAlerts(): HasMany
+    {
+        return $this->hasMany(PriceAlert::class);
+    }
+
+    /**
+     * Get average rating from reviews.
+     */
+    public function averageRating(): float
+    {
+        return $this->reviews()->approved()->avg('rating') ?? 0;
     }
 
     /**
