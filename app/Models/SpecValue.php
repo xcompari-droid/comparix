@@ -38,4 +38,24 @@ class SpecValue extends Model
     {
         return $this->belongsTo(SpecKey::class);
     }
+
+    /**
+     * Get the value attribute (returns the appropriate value based on type).
+     */
+    public function getValueAttribute()
+    {
+        if ($this->value_string !== null) {
+            return $this->value_string;
+        }
+        
+        if ($this->value_number !== null) {
+            return $this->value_number;
+        }
+        
+        if ($this->value_bool !== null) {
+            return $this->value_bool ? 'Da' : 'Nu';
+        }
+        
+        return null;
+    }
 }
