@@ -97,6 +97,28 @@
                    class="block w-full bg-blue-600 hover:bg-blue-700 text-white text-center font-semibold py-3 lg:py-4 px-6 rounded-2xl shadow-lg shadow-blue-600/20 hover:shadow-xl hover:shadow-blue-600/30 transition-all duration-200">
                     Compară cu alte produse
                 </a>
+
+                @auth
+                {{-- Favorite & Price Alert Buttons --}}
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="toggleFavorite({{ $product->id }})" 
+                            id="favorite-btn"
+                            class="flex items-center justify-center gap-2 bg-white hover:bg-neutral-50 border-2 border-neutral-200 hover:border-red-300 text-neutral-700 hover:text-red-600 font-semibold py-3 px-4 rounded-2xl transition-all duration-200">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" id="heart-icon">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                        </svg>
+                        <span id="favorite-text">Favorite</span>
+                    </button>
+                    
+                    <button onclick="showPriceAlert()" 
+                            class="flex items-center justify-center gap-2 bg-white hover:bg-neutral-50 border-2 border-neutral-200 hover:border-blue-300 text-neutral-700 hover:text-blue-600 font-semibold py-3 px-4 rounded-2xl transition-all duration-200">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                        </svg>
+                        <span>Alertă preț</span>
+                    </button>
+                </div>
+                @endauth
             </div>
         </div>
 
@@ -223,4 +245,102 @@
         @endif
     </div>
 </div>
+
+@auth
+{{-- Price Alert Modal --}}
+<div id="price-alert-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8" onclick="event.stopPropagation()">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-2xl font-bold text-neutral-900">Alertă de preț</h3>
+            <button onclick="hidePriceAlert()" class="text-neutral-400 hover:text-neutral-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        
+        <p class="text-neutral-600 mb-6">
+            Vei primi o notificare prin email când prețul produsului scade sub suma dorită.
+        </p>
+        
+        <form action="{{ route('price-alerts.store', $product->id) }}" method="POST">
+            @csrf
+            <div class="mb-6">
+                <label for="target_price" class="block text-sm font-medium text-neutral-700 mb-2">
+                    Preț dorit (RON)
+                </label>
+                <input type="number" 
+                       name="target_price" 
+                       id="target_price" 
+                       step="0.01" 
+                       min="0"
+                       @if($product->offers->isNotEmpty())
+                       value="{{ $product->offers->sortBy('price')->first()->price }}"
+                       @endif
+                       class="w-full px-4 py-3 border border-neutral-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                       required>
+            </div>
+            
+            <div class="flex gap-3">
+                <button type="button" 
+                        onclick="hidePriceAlert()"
+                        class="flex-1 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-semibold py-3 px-4 rounded-xl transition-colors">
+                    Anulează
+                </button>
+                <button type="submit"
+                        class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl transition-colors">
+                    Creează alertă
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function toggleFavorite(productId) {
+    fetch(`/produse/${productId}/favorite`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        const btn = document.getElementById('favorite-btn');
+        const text = document.getElementById('favorite-text');
+        const icon = document.getElementById('heart-icon');
+        
+        if (data.favorited) {
+            btn.classList.add('border-red-500', 'bg-red-50', 'text-red-600');
+            btn.classList.remove('border-neutral-200');
+            icon.setAttribute('fill', 'currentColor');
+            text.textContent = 'Favorit';
+        } else {
+            btn.classList.remove('border-red-500', 'bg-red-50', 'text-red-600');
+            btn.classList.add('border-neutral-200');
+            icon.setAttribute('fill', 'none');
+            text.textContent = 'Favorite';
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function showPriceAlert() {
+    document.getElementById('price-alert-modal').classList.remove('hidden');
+}
+
+function hidePriceAlert() {
+    document.getElementById('price-alert-modal').classList.add('hidden');
+}
+
+// Close modal on outside click
+document.getElementById('price-alert-modal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        hidePriceAlert();
+    }
+});
+</script>
+@endauth
+
 @endsection
