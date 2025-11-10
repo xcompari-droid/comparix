@@ -138,11 +138,18 @@ class VersusCompareController extends Controller
             if ($spec->value_number !== null) {
                 $metrics[$key] = $spec->value_number;
             } 
+            // Apoi value_bool (convertit la boolean real)
+            elseif ($spec->value_bool !== null) {
+                $metrics[$key] = (bool) $spec->value_bool;
+            }
             // Încearcă să extragi număr din value_string
             elseif ($spec->value_string !== null) {
                 $numericValue = $this->extractNumber($spec->value_string);
                 if ($numericValue !== null) {
                     $metrics[$key] = $numericValue;
+                } else {
+                    // Dacă nu e număr, păstrează string-ul
+                    $metrics[$key] = $spec->value_string;
                 }
             }
         }
