@@ -215,14 +215,26 @@ const formatMetricValue = (key, value) => {
   if (value === 'false' || value === false) return 'Nu';
   
   // Check if this is a boolean spec key (common boolean features)
+  const keyLower = key.toLowerCase();
+  
+  // Check if key starts with boolean indicators (Romanian: "Are", "Este", "Suportă", "Vine cu", etc.)
+  const booleanPrefixes = ['are ', 'este ', 'suportă ', 'suporta ', 'vine cu ', 'poate ', 'are_', 'este_', 'suporta_', 'vine_cu_', 'poate_'];
+  const hasBooleanPrefix = booleanPrefixes.some(prefix => keyLower.startsWith(prefix));
+  
+  // Check for "has" prefix (English)
+  const hasEnglishPrefix = keyLower.startsWith('has ') || keyLower.startsWith('has_');
+  
+  // Common boolean keywords
   const booleanKeys = ['wifi', 'wi-fi', 'bluetooth', 'nfc', 'gps', 'direct_drive', 'inverter', 
                        'ai', 'smart', 'control', 'rapid', 'eco', 'steam', 'abur', 'alergii',
                        'blocare', 'aquastop', 'display', 'pornire', 'dual_sim', 'face_id',
                        'touch_id', 'wireless', 'water_resistant', 'fast_charging', 'hdr',
                        'voice_control', 'gaming', 'usb', 'hdmi', 'ethernet', 'headphone'];
   
-  const keyLower = key.toLowerCase().replace(/[_\s-]/g, '');
-  const isBooleanSpec = booleanKeys.some(bk => keyLower.includes(bk.replace(/[_\s-]/g, '')));
+  const keyNormalized = keyLower.replace(/[_\s-]/g, '');
+  const hasBooleanKeyword = booleanKeys.some(bk => keyNormalized.includes(bk.replace(/[_\s-]/g, '')));
+  
+  const isBooleanSpec = hasBooleanPrefix || hasEnglishPrefix || hasBooleanKeyword;
   
   // If null/undefined and it's a boolean spec, return "Nu"
   if ((value === null || value === undefined) && isBooleanSpec) {
