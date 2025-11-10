@@ -250,6 +250,9 @@ const isWinner = (metricKey, item) => {
   const currentValue = item.metrics[metricKey];
   if (currentValue === null || currentValue === undefined) return false;
 
+  // Don't highlight boolean features as winners (Da/Nu should be neutral)
+  if (typeof currentValue === 'boolean') return false;
+
   return def.higherIsBetter
     ? currentValue === Math.max(...values)
     : currentValue === Math.min(...values);
@@ -264,7 +267,7 @@ const getWinnerClass = (metricKey, item) => {
 
   return isWinner(metricKey, item)
     ? 'bg-green-50 text-green-700 font-bold'
-    : '';
+    : 'text-gray-900';
 };
 
 // Count how many metrics each item wins
