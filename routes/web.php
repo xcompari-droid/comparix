@@ -19,7 +19,34 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return view('home');
+    $popularComparisons = [
+        [
+            'id1' => 323,
+            'id2' => 324,
+            'name1' => 'Apple Watch Series 10',
+            'name2' => 'Apple Watch Ultra 2',
+            'image1' => 'https://m.media-amazon.com/images/I/71M0sABTNxL._AC_SL1500_.jpg',
+            'image2' => 'https://m.media-amazon.com/images/I/81S0fHXEURL._AC_SL1500_.jpg',
+        ],
+        [
+            'id1' => 383,
+            'id2' => 384,
+            'name1' => 'Apple AirPods Pro 2',
+            'name2' => 'Apple AirPods 3',
+            'image1' => 'https://m.media-amazon.com/images/I/61SUj2aKoEL._AC_SL1500_.jpg',
+            'image2' => 'https://m.media-amazon.com/images/I/61NiiCNtWWL._AC_SL1500_.jpg',
+        ],
+        [
+            'id1' => 416,
+            'id2' => 417,
+            'name1' => 'Samsung WW90T554DAW/S7',
+            'name2' => 'LG F4WV710P2E',
+            'image1' => '/storage/products/416-1762782228.jpg',
+            'image2' => '/storage/products/417-1762782234.jpg',
+        ],
+    ];
+    
+    return view('home', compact('popularComparisons'));
 });
 
 Route::get('/health', fn() => response()->json(['ok' => true, 'time' => now()], 200));

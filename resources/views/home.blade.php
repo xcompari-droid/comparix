@@ -19,13 +19,25 @@
                 </svg>
                 Explorează Produsele
             </a>
-            <a href="/admin" class="inline-flex items-center px-8 py-4 bg-white text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-all shadow-md hover:shadow-lg border-2 border-gray-200">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                </svg>
-                Panou Admin
-            </a>
+            
+            <!-- Search Bar replacing Admin button -->
+            <form action="/cautare" method="GET" class="relative flex-1 max-w-md">
+                <input 
+                    type="text" 
+                    name="q" 
+                    placeholder="Caută produse..." 
+                    class="w-full pl-4 pr-12 py-4 rounded-lg border-2 border-gray-200 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-100 outline-none transition-all shadow-md"
+                    value="{{ request('q') }}"
+                >
+                <button 
+                    type="submit"
+                    class="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-gray-500 hover:text-cyan-600 transition-colors"
+                >
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </button>
+            </form>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto mt-16">
@@ -59,7 +71,70 @@
                 <p class="text-gray-600 text-sm">Interface modernă și intuitivă</p>
             </div>
         </div>
+    </div>
+</div>
 
+<!-- Popular Comparisons Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                Comparații <span class="bg-gradient-to-r from-cyan-500 to-emerald-400 bg-clip-text text-transparent">Populare</span>
+            </h2>
+            <p class="text-gray-600 text-lg">Vezi exemple de comparații pentru a înțelege cum funcționează</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            @foreach($popularComparisons as $comparison)
+            <a href="/compara?ids={{ $comparison['id1'] }},{{ $comparison['id2'] }}&style=versus" 
+               class="group block bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200 rounded-2xl p-6 hover:border-cyan-400 hover:shadow-2xl transition-all duration-300">
+                
+                <div class="flex items-center justify-between gap-4">
+                    <!-- Product 1 -->
+                    <div class="flex-1 text-center">
+                        <div class="bg-white rounded-xl p-4 mb-3 shadow-md group-hover:shadow-lg transition-shadow">
+                            <img src="{{ $comparison['image1'] }}" 
+                                 alt="{{ $comparison['name1'] }}" 
+                                 class="w-full h-32 object-contain">
+                        </div>
+                        <p class="text-sm font-medium text-gray-800 line-clamp-2">{{ $comparison['name1'] }}</p>
+                    </div>
+
+                    <!-- VS Separator -->
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500 to-emerald-400 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                            <span class="text-white font-bold text-lg">VS</span>
+                        </div>
+                    </div>
+
+                    <!-- Product 2 -->
+                    <div class="flex-1 text-center">
+                        <div class="bg-white rounded-xl p-4 mb-3 shadow-md group-hover:shadow-lg transition-shadow">
+                            <img src="{{ $comparison['image2'] }}" 
+                                 alt="{{ $comparison['name2'] }}" 
+                                 class="w-full h-32 object-contain">
+                        </div>
+                        <p class="text-sm font-medium text-gray-800 line-clamp-2">{{ $comparison['name2'] }}</p>
+                    </div>
+                </div>
+
+                <!-- CTA -->
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <div class="flex items-center justify-center text-cyan-600 group-hover:text-emerald-600 font-semibold transition-colors">
+                        <span>Vezi Comparația</span>
+                        <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </div>
+                </div>
+            </a>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+<div class="bg-gradient-to-b from-cyan-50 via-white to-emerald-50 py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="mt-16 pt-16 border-t border-gray-200 max-w-3xl mx-auto">
             <h2 class="text-2xl font-bold mb-6">Următorii pași</h2>
             <div class="bg-white rounded-lg shadow-md p-6 text-left">
