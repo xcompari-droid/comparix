@@ -206,6 +206,16 @@ const getMetricLabel = (key) => {
 // Format metric value with unit
 const formatMetricValue = (key, value) => {
   if (value === null || value === undefined) return '-';
+  
+  // Handle boolean values
+  if (typeof value === 'boolean') {
+    return value ? 'Da' : 'Nu';
+  }
+  
+  // Handle string boolean values
+  if (value === 'true' || value === true) return 'Da';
+  if (value === 'false' || value === false) return 'Nu';
+  
   const def = props.metricDefinitions?.find(m => m.key === key);
   return def?.unit ? `${value}${def.unit}` : value;
 };

@@ -84,10 +84,12 @@
                                         {{ $specValue->specKey->name }}
                                     </dt>
                                     <dd class="text-sm font-semibold text-neutral-900">
-                                        @if(is_numeric($specValue->value))
-                                            {{ format_number($specValue->value) }}
-                                        @else
-                                            {{ $specValue->value }}
+                                        @if($specValue->value_string)
+                                            {{ $specValue->value_string }}
+                                        @elseif($specValue->value_number !== null)
+                                            {{ format_number($specValue->value_number) }}
+                                        @elseif($specValue->value_bool !== null)
+                                            {{ $specValue->value_bool ? 'Da' : 'Nu' }}
                                         @endif
                                         @if($specValue->specKey->unit)
                                             <span class="text-xs text-neutral-500 font-normal">{{ $specValue->specKey->unit }}</span>
@@ -199,10 +201,12 @@
                                         {{ $specValue->specKey->name }}
                                     </td>
                                     <td class="px-6 py-4 text-sm text-neutral-700">
-                                        @if(is_numeric($specValue->value))
-                                            {{ format_number($specValue->value) }}
-                                        @else
-                                            {{ $specValue->value }}
+                                        @if($specValue->value_string)
+                                            {{ $specValue->value_string }}
+                                        @elseif($specValue->value_number !== null)
+                                            {{ format_number($specValue->value_number) }}
+                                        @elseif($specValue->value_bool !== null)
+                                            {{ $specValue->value_bool ? 'Da' : 'Nu' }}
                                         @endif
                                         @if($specValue->specKey->unit)
                                             <span class="text-neutral-500">{{ $specValue->specKey->unit }}</span>
