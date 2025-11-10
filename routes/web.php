@@ -6,6 +6,7 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\PriceAlertController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\VersusCompareController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,8 +28,13 @@ Route::get('/health', fn() => response()->json(['ok' => true, 'time' => now()], 
 Route::get('/categorii', [CategoryController::class, 'index'])->name('categories.index');
 Route::get('/categorii/{slug}', [CategoryController::class, 'show'])->name('categories.show');
 Route::get('/produse/{id}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/cautare', [ProductController::class, 'search'])->name('products.search');
 Route::get('/compara', [ComparisonController::class, 'compare'])->name('compare');
 Route::get('/oferta/{id}', [ComparisonController::class, 'redirect'])->name('offer.redirect');
+
+// Versus-style comparison widget
+Route::get('/compare/demo', [VersusCompareController::class, 'demo'])->name('compare.demo');
+Route::get('/compare/versus', [VersusCompareController::class, 'compare'])->name('compare.versus');
 
 Route::middleware([
     'auth:sanctum',
