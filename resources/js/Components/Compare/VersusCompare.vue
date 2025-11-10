@@ -205,9 +205,7 @@ const getMetricLabel = (key) => {
 
 // Format metric value with unit
 const formatMetricValue = (key, value) => {
-  if (value === null || value === undefined) return '-';
-  
-  // Handle boolean values
+  // Handle boolean values first (including null for boolean specs)
   if (typeof value === 'boolean') {
     return value ? 'Da' : 'Nu';
   }
@@ -215,6 +213,24 @@ const formatMetricValue = (key, value) => {
   // Handle string boolean values
   if (value === 'true' || value === true) return 'Da';
   if (value === 'false' || value === false) return 'Nu';
+  
+  // Check if this is a boolean spec key (common boolean features)
+  const booleanKeys = ['wifi', 'wi-fi', 'bluetooth', 'nfc', 'gps', 'direct_drive', 'inverter', 
+                       'ai', 'smart', 'control', 'rapid', 'eco', 'steam', 'abur', 'alergii',
+                       'blocare', 'aquastop', 'display', 'pornire', 'dual_sim', 'face_id',
+                       'touch_id', 'wireless', 'water_resistant', 'fast_charging', 'hdr',
+                       'voice_control', 'gaming', 'usb', 'hdmi', 'ethernet', 'headphone'];
+  
+  const keyLower = key.toLowerCase().replace(/[_\s-]/g, '');
+  const isBooleanSpec = booleanKeys.some(bk => keyLower.includes(bk.replace(/[_\s-]/g, '')));
+  
+  // If null/undefined and it's a boolean spec, return "Nu"
+  if ((value === null || value === undefined) && isBooleanSpec) {
+    return 'Nu';
+  }
+  
+  // For non-boolean specs, return dash if missing
+  if (value === null || value === undefined) return '-';
   
   const def = props.metricDefinitions?.find(m => m.key === key);
   return def?.unit ? `${value}${def.unit}` : value;
