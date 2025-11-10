@@ -1,0 +1,20 @@
+=== EXTRAGERE SPECIFICA╚ÜII GPU CU PUPPETEER ===
+
+GPU-uri de procesat: 5
+
+Procesare: Nvidia Rtx Pro 6000 Blackwell Server Edition...
+  Ôťô Salvate 0 specifica╚Ťii
+
+Procesare: Asus Rog Astral Lc Geforce Rtx 5090 Oc Edition...
+  Ôťô Salvate 0 specifica╚Ťii
+
+Procesare: Nvidia Rtx Pro 6000 Blackwell Workstation Edition...
+  Ôťô Salvate 0 specifica╚Ťii
+
+Procesare: Gigabyte Aorus Geforce Rtx 5090 Xtreme Waterforce...
+  Ôťô Salvate 0 specifica╚Ťii
+
+Procesare: Nvidia Rtx Pro 6000 Blackwell Max Q Workstation Edition...
+  Ôťô Salvate 0 specifica╚Ťii
+
+Ôťô Proces finalizat!

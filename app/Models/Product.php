@@ -15,13 +15,16 @@ class Product extends Model implements HasMedia
     use HasFactory, Searchable, InteractsWithMedia;
 
     protected $fillable = [
+        'category_id',
         'product_type_id',
         'name',
         'brand',
         'mpn',
         'ean',
         'short_desc',
+        'long_desc',
         'image_url',
+        'source_url',
         'score',
     ];
 
@@ -58,6 +61,14 @@ class Product extends Model implements HasMedia
                 'brand' => $this->brand,
             ];
         }
+    }
+
+    /**
+     * Get the category that owns the product.
+     */
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 
     /**

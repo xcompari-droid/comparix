@@ -64,7 +64,7 @@
                         @endphp
                         <div class="flex items-baseline gap-3 mb-6">
                             <span class="text-3xl lg:text-4xl font-bold text-neutral-900">
-                                {{ number_format($bestOffer->price, 2) }} RON
+                                {{ format_number($bestOffer->price) }} RON
                             </span>
                             <span class="text-xs lg:text-sm text-neutral-500">
                                 cel mai mic preț
@@ -84,7 +84,14 @@
                                         {{ $specValue->specKey->name }}
                                     </dt>
                                     <dd class="text-sm font-semibold text-neutral-900">
-                                        {{ $specValue->value }}
+                                        @if(is_numeric($specValue->value))
+                                            {{ format_number($specValue->value) }}
+                                        @else
+                                            {{ $specValue->value }}
+                                        @endif
+                                        @if($specValue->specKey->unit)
+                                            <span class="text-xs text-neutral-500 font-normal">{{ $specValue->specKey->unit }}</span>
+                                        @endif
                                     </dd>
                                 </div>
                             @endforeach
@@ -147,11 +154,11 @@
                             <div class="flex items-center gap-4 lg:gap-6">
                                 <div class="text-left lg:text-right">
                                     <div class="text-xl lg:text-2xl font-bold text-neutral-900">
-                                        {{ number_format($offer->price, 2) }} RON
+                                        {{ format_number($offer->price) }} RON
                                     </div>
                                     @if($offer->shipping_price > 0)
                                         <div class="text-xs text-neutral-500">
-                                            + {{ number_format($offer->shipping_price, 2) }} RON livrare
+                                            + {{ format_number($offer->shipping_price) }} RON livrare
                                         </div>
                                     @else
                                         <div class="text-xs text-green-600 font-medium">
@@ -192,7 +199,14 @@
                                         {{ $specValue->specKey->name }}
                                     </td>
                                     <td class="px-6 py-4 text-sm text-neutral-700">
-                                        {{ $specValue->value }}
+                                        @if(is_numeric($specValue->value))
+                                            {{ format_number($specValue->value) }}
+                                        @else
+                                            {{ $specValue->value }}
+                                        @endif
+                                        @if($specValue->specKey->unit)
+                                            <span class="text-neutral-500">{{ $specValue->specKey->unit }}</span>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
@@ -235,7 +249,7 @@
                                     $bestPrice = $similar->offers->sortBy('price')->first();
                                 @endphp
                                 <p class="text-xl font-bold text-neutral-900">
-                                    {{ number_format($bestPrice->price, 2) }} RON
+                                    {{ format_number($bestPrice->price) }} RON
                                 </p>
                             @endif
                         </a>

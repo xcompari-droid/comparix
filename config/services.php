@@ -35,4 +35,26 @@ return [
         ],
     ],
 
+    '2performant' => [
+        'api_key' => env('TWO_PERFORMANT_API_KEY'),
+        'unique_code' => env('TWO_PERFORMANT_UNIQUE_CODE'),
+    ],
+
+    'icecat' => [
+        'base_url' => env('ICECAT_BASE_URL', 'https://api.openicecat.org/api/v1'),
+        'token' => env('ICECAT_TOKEN'),
+        'username' => env('ICECAT_USERNAME'),
+        'password' => env('ICECAT_PASSWORD'),
+    ],
+
+    'unsplash' => [
+        'access_key' => env('UNSPLASH_ACCESS_KEY'),
+        'secret_key' => env('UNSPLASH_SECRET_KEY'),
+    ],
+
+    'google' => [
+        'api_key' => env('GOOGLE_API_KEY'),
+        'search_engine_id' => env('GOOGLE_SEARCH_ENGINE_ID'),
+    ],
+
 ];

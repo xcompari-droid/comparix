@@ -24,7 +24,7 @@ class CategoryController extends Controller
         $products = Product::whereHas('productType', function ($query) use ($category) {
             $query->where('category_id', $category->id);
         })
-            ->with(['offers', 'productType.category'])
+            ->with(['offers', 'productType.category', 'specValues.specKey'])
             ->paginate(12);
         
         return view('categories.show', compact('category', 'products'));

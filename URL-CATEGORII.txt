@@ -1,0 +1,68 @@
+════════════════════════════════════════════════════════════════
+🔗 URL-URI CORECTE PENTRU CATEGORII
+════════════════════════════════════════════════════════════════
+
+Serverul rulează pe: http://localhost:8080
+
+📁 CATEGORII DISPONIBILE:
+════════════════════════════════════════════════════════════════
+
+1. ✅ Smartphone (108 produse)
+   http://localhost:8080/categorii/smartphone
+
+2. ✅ Oraș (10 produse)  
+   http://localhost:8080/categorii/oras
+
+3. ✅ Smartwatch (30 produse)
+   http://localhost:8080/categorii/smartwatch
+
+4. ✅ Placă video (30 produse)
+   http://localhost:8080/categorii/placa-video
+
+5. ✅ Căști wireless (33 produse)
+   http://localhost:8080/categorii/casti-wireless
+
+6. 📸 Frigider (20 produse) - ⭐ CU IMAGINI HD UNSPLASH!
+   http://localhost:8080/categorii/frigider
+
+7. ✅ Mașină de spălat (53 produse)
+   http://localhost:8080/categorii/masina-de-spalat
+
+
+════════════════════════════════════════════════════════════════
+⚠️ IMPORTANT - RUTARE
+════════════════════════════════════════════════════════════════
+
+Serverul PHP simplu (php -S localhost:8080 -t public) are probleme
+cu rutarea Laravel!
+
+SOLUȚIE: Asigură-te că index.php funcționează corect.
+
+
+════════════════════════════════════════════════════════════════
+🧪 TESTEAZĂ DIRECT:
+════════════════════════════════════════════════════════════════
+
+http://localhost:8080
+
+Ar trebui să vezi homepage-ul Comparix.
+
+Dacă nu funcționează, verifică că index.php există în /public
+
+
+════════════════════════════════════════════════════════════════
+📸 PENTRU A VEDEA IMAGINILE UNSPLASH:
+════════════════════════════════════════════════════════════════
+
+Imaginile au fost salvate în:
+storage/app/public/products/
+
+Pentru a le vedea în browser:
+1. Verifică că link-ul există: public/storage -> storage/app/public
+2. Accesează: http://localhost:8080/storage/products/
+
+
+VERIFICARE DIRECTĂ:
+ls storage/app/public/products/
+
+Ar trebui să vezi 10 fișiere .jpg pentru frigidere!

@@ -1,0 +1,36 @@
+    
+    private function getLaptopList(): array
+    {
+        return [
+            [
+                'name' => 'Apple MacBook Pro 16" (2023) M3 Max',
+                'brand' => 'Apple',
+                'price' => 21999.99,
+                'source_url' => 'https://versus.com/en/apple-macbook-pro-16-2023-m3-max',
+                'specs' => [
+                    'Dimensiune ecran' => '16 inch',
+                    'Rezoluție' => '3456 x 2234 px',
+                    'Procesor' => 'Apple M3 Max',
+                    'Nuclee CPU' => '16',
+                    'Frecvență CPU' => '4.05 GHz',
+                    'RAM' => '36 GB',
+                    'Stocare' => '1 TB SSD',
+                    'Placă video' => 'Apple M3 Max (40-core GPU)',
+                    'Greutate' => '2.14 kg',
+                    'Grosime' => '16.8 mm',
+                    'Autonomie baterie' => '22 ore',
+                    'Capacitate baterie' => '100 Wh',
+                    'Rată de reîmprospătare' => '120 Hz',
+                    'Luminozitate' => '1600 nits',
+                    'Tip display' => 'Mini LED',
+                    'Sistem de operare' => 'macOS',
+                    'Wi-Fi' => 'Wi-Fi 6E',
+                    'Bluetooth' => '5.3',
+                    'Porturi USB-C' => '3',
+                    'Port HDMI' => 'Da',
+                    'Jack audio' => 'Da',
+                ],
+            ],
+        ];
+    }
+}

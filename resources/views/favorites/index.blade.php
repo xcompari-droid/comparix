@@ -65,7 +65,7 @@
                             @if($bestOffer)
                                 <div class="mb-4">
                                     <div class="text-2xl font-bold text-neutral-900">
-                                        {{ number_format($bestOffer->price, 2) }} RON
+                                        {{ format_number($bestOffer->price) }} RON
                                     </div>
                                     <div class="text-sm text-neutral-500">
                                         {{ $product->offers->count() }} {{ $product->offers->count() === 1 ? 'ofertă' : 'oferte' }}

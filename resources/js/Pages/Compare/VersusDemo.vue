@@ -1,6 +1,7 @@
 <script setup>
 import PublicLayout from '@/Layouts/PublicLayout.vue';
 import VersusCompare from '@/Components/Compare/VersusCompare.vue';
+import { computed } from 'vue';
 
 const props = defineProps({
   items: {
@@ -11,6 +12,27 @@ const props = defineProps({
     type: Array,
     default: () => []
   }
+});
+
+// Generate dynamic title based on products
+const comparisonTitle = computed(() => {
+  if (!props.items || props.items.length === 0) return 'Comparație Produse';
+  
+  if (props.items.length === 2) {
+    return `${props.items[0].brand} vs ${props.items[1].brand}`;
+  }
+  
+  // For 3+ products, use brand names
+  const brands = [...new Set(props.items.map(item => item.brand))];
+  if (brands.length === 1) {
+    return `Comparație ${brands[0]}`;
+  }
+  
+  return 'Comparație Produse';
+});
+
+const comparisonSubtitle = computed(() => {
+  return 'Analiză detaliată specificații și prețuri';
 });
 </script>
 
@@ -34,8 +56,8 @@ const props = defineProps({
           v-if="items && items.length > 0"
           :items="items"
           :metricDefinitions="metricDefinitions"
-          title="Comparație GPU-uri High-End"
-          subtitle="Analiză detaliată cu normalizare inteligentă"
+          :title="comparisonTitle"
+          :subtitle="comparisonSubtitle"
         />
         <div v-else class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
           <strong class="font-bold">Eroare:</strong>

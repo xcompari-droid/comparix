@@ -58,10 +58,20 @@
                     <div class="p-6">
                         <!-- Product Image -->
                         @if($product->image_url)
-                            <div class="mb-4">
+                            <div class="mb-4 bg-gray-50 rounded-lg flex items-center justify-center p-4" style="min-height: 192px;">
                                 <img src="{{ $product->image_url }}" 
                                      alt="{{ $product->name }}" 
-                                     class="w-full h-48 object-contain">
+                                     class="w-full h-48 object-contain"
+                                     loading="lazy"
+                                     referrerpolicy="no-referrer"
+                                     crossorigin="anonymous"
+                                     onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22 viewBox=%220 0 200 200%22%3E%3Crect fill=%22%23f3f4f6%22 width=%22200%22 height=%22200%22/%3E%3Ctext fill=%22%239ca3af%22 font-family=%22Arial%22 font-size=%2214%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3E{{ $product->brand ?? 'No Image' }}%3C/text%3E%3C/svg%3E'; this.parentElement.classList.add('bg-gray-100');">
+                            </div>
+                        @else
+                            <div class="mb-4 bg-gray-100 rounded-lg flex items-center justify-center" style="height: 192px;">
+                                <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
                             </div>
                         @endif
 
@@ -73,6 +83,29 @@
                         
                         @if($product->brand)
                             <p class="text-sm text-gray-500 mb-3">{{ $product->brand }}</p>
+                        @endif
+
+                        <!-- Key Specifications -->
+                        @if($product->specValues && $product->specValues->isNotEmpty())
+                            <div class="mb-4 space-y-1">
+                                @foreach($product->specValues->take(5) as $spec)
+                                    <div class="text-xs text-gray-600 flex justify-between">
+                                        <span class="font-medium">{{ $spec->specKey->name ?? 'Unknown' }}:</span>
+                                        <span class="text-gray-800">
+                                            @if($spec->value_string)
+                                                {{ $spec->value_string }}
+                                            @elseif($spec->value_number)
+                                                {{ rtrim(rtrim(number_format($spec->value_number, 2, '.', ''), '0'), '.') }}
+                                            @else
+                                                {{ $spec->value_bool ? 'Da' : 'Nu' }}
+                                            @endif
+                                        </span>
+                                    </div>
+                                @endforeach
+                                @if($product->specValues->count() > 5)
+                                    <p class="text-xs text-cyan-600">+{{ $product->specValues->count() - 5 }} mai multe</p>
+                                @endif
+                            </div>
                         @endif
 
                         @if($product->description)
@@ -88,7 +121,11 @@
                                        class="block p-3 bg-gradient-to-r from-cyan-50 to-emerald-50 rounded-lg hover:from-cyan-100 hover:to-emerald-100 transition-colors">
                                         <div class="flex justify-between items-center">
                                             <span class="text-sm font-medium text-gray-700">{{ $offer->store_name }}</span>
-                                            <span class="text-lg font-bold text-cyan-600">{{ number_format($offer->price, 2) }} RON</span>
+                                            @if($category->slug !== 'orase' && $offer->price > 0)
+                                                <span class="text-lg font-bold text-cyan-600">{{ format_number($offer->price) }} RON</span>
+                                            @else
+                                                <span class="text-sm text-blue-600">Vezi detalii →</span>
+                                            @endif
                                         </div>
                                         @if($offer->stock_status)
                                             <span class="text-xs text-green-600">✓ În stoc</span>

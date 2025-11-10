@@ -1,0 +1,206 @@
+════════════════════════════════════════════════════════════════
+🔑 UNSPLASH API KEY - GHID PAS CU PAS (CU SCREENSHOTS)
+════════════════════════════════════════════════════════════════
+
+📍 PASUL 1: ACCESEAZĂ PAGINA
+════════════════════════════════════════════════════════════════
+
+Deschide browser și mergi la:
+https://unsplash.com/developers
+
+Sau caută pe Google: "unsplash developers"
+
+
+📍 PASUL 2: ÎNREGISTREAZĂ-TE / LOGIN
+════════════════════════════════════════════════════════════════
+
+Dacă NU ai cont:
+  → Click "Join" (sus-dreapta)
+  → Completează: Email, Nume, Username, Parolă
+  → Click "Join"
+
+Dacă AI deja cont:
+  → Click "Log in" (sus-dreapta)
+  → Introdu email + parolă
+
+
+📍 PASUL 3: MERGI LA DEVELOPERS
+════════════════════════════════════════════════════════════════
+
+După login, mergi din nou la:
+https://unsplash.com/developers
+
+SAU
+
+Click pe avatarul tău (sus-dreapta) → "API/Developers"
+
+
+📍 PASUL 4: REGISTER AS DEVELOPER
+════════════════════════════════════════════════════════════════
+
+Vei vedea un buton mare:
+"Register as a developer"
+
+Click pe el!
+
+Trebuie să completezi un formular scurt:
+  - First name: Calin
+  - Last name: [numele tău]
+  - Email: [email-ul tău]
+  - Username: [username Unsplash]
+  
+Click "Register"
+
+
+📍 PASUL 5: CREEAZĂ APLICAȚIA (NEW APPLICATION)
+════════════════════════════════════════════════════════════════
+
+După ce ești înregistrat ca developer, vei vedea pagina:
+"Your applications"
+
+Click pe butonul: "+ New Application"
+
+Dacă NU vezi acest buton:
+  → Verifică că ești pe: https://unsplash.com/oauth/applications
+  → SAU caută un link "Your apps" în meniu
+
+
+📍 PASUL 6: COMPLETEAZĂ FORMULARUL
+════════════════════════════════════════════════════════════════
+
+Vei vedea un formular cu:
+
+1. Accept Terms:
+   ☑ I have read and agree to the API Terms
+   → Bifează această căsuță
+
+2. Application name:
+   → Scrie: Comparix
+
+3. Description:
+   → Scrie: Product comparison website for Romanian market
+
+4. Click "Create application"
+
+
+📍 PASUL 7: COPIAZĂ API KEYS
+════════════════════════════════════════════════════════════════
+
+După ce creezi aplicația, vei vedea:
+
+┌─────────────────────────────────────────────┐
+│ Application: Comparix                       │
+├─────────────────────────────────────────────┤
+│                                             │
+│ Access Key:                                 │
+│ ┌─────────────────────────────────────────┐ │
+│ │ AbCdEfGh123456789...                    │ │
+│ └─────────────────────────────────────────┘ │
+│ [Copy] buton                                │
+│                                             │
+│ Secret key:                                 │
+│ ┌─────────────────────────────────────────┐ │
+│ │ XyZ987654321...                         │ │
+│ └─────────────────────────────────────────┘ │
+│ [Copy] buton                                │
+└─────────────────────────────────────────────┘
+
+→ Click "Copy" la Access Key
+→ Click "Copy" la Secret Key
+
+
+📍 PASUL 8: ADAUGĂ ÎN .env
+════════════════════════════════════════════════════════════════
+
+Deschide: c:\Users\calin\Documents\comparix\.env
+
+La final, adaugă:
+
+UNSPLASH_ACCESS_KEY=paste_aici_access_key
+UNSPLASH_SECRET_KEY=paste_aici_secret_key
+
+Înlocuiește cu keys copiați!
+
+
+════════════════════════════════════════════════════════════════
+⚠️ DACĂ NU GĂSEȘTI "NEW APPLICATION"
+════════════════════════════════════════════════════════════════
+
+SOLUȚIE 1: Link Direct
+───────────────────────────────────────────────
+
+Mergi DIRECT la:
+https://unsplash.com/oauth/applications/new
+
+Asta te duce direct la formularul de creare aplicație!
+
+
+SOLUȚIE 2: Verifică Email-ul
+───────────────────────────────────────────────
+
+Uneori Unsplash trimite email de confirmare.
+Verifică inbox-ul pentru email de la Unsplash.
+
+
+SOLUȚIE 3: Resetează Procesul
+───────────────────────────────────────────────
+
+1. Logout de pe Unsplash
+2. Login din nou
+3. Mergi la: https://unsplash.com/oauth/applications
+4. Ar trebui să vezi "+ New Application"
+
+
+SOLUȚIE 4: Pagina Corectă
+───────────────────────────────────────────────
+
+Asigură-te că ești pe pagina corectă:
+
+✅ CORECT: https://unsplash.com/oauth/applications
+❌ GREȘIT: https://unsplash.com/developers (doar info)
+
+Link direct pentru aplicații:
+https://unsplash.com/oauth/applications
+
+
+════════════════════════════════════════════════════════════════
+📸 ALTERNATIVĂ: DEMO MODE (fără API key)
+════════════════════════════════════════════════════════════════
+
+Dacă nu reușești să obții API key acum, poți folosi:
+
+PLAN B: Rămâi cu placeholder-uri branded (ce ai acum)
+  → Site funcțional 100%
+  → Arată profesional
+  → Fără costuri
+  → Obții API key mai târziu când ai timp
+
+
+════════════════════════════════════════════════════════════════
+📞 AJUTOR SUPLIMENTAR
+════════════════════════════════════════════════════════════════
+
+Dacă încă nu reușești:
+
+1. Trimite-mi screenshot de la:
+   https://unsplash.com/oauth/applications
+   
+2. Verifică că ai:
+   - Cont confirmat pe Unsplash
+   - Email verificat
+   - Developer status activat
+
+3. Încearcă din alt browser (Chrome/Firefox)
+
+
+════════════════════════════════════════════════════════════════
+✅ DUPĂ CE AI API KEY-URILE
+════════════════════════════════════════════════════════════════
+
+1. Adaugă în .env
+2. Salvează fișierul
+3. Rulează: php test-unsplash-api.php
+4. Dacă merge → php import-unsplash-images.php
+
+
+Succes! 🚀

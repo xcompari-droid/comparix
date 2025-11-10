@@ -100,10 +100,10 @@
                         <p class="text-sm font-medium text-gray-800 line-clamp-2">{{ $comparison['name1'] }}</p>
                     </div>
 
-                    <!-- VS Separator -->
+                    <!-- X Separator (ca în logo) -->
                     <div class="flex-shrink-0">
                         <div class="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500 to-emerald-400 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                            <span class="text-white font-bold text-lg">VS</span>
+                            <span class="text-white font-bold text-xl">X</span>
                         </div>
                     </div>
 

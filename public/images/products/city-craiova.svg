@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+  <defs>
+    <linearGradient id="bg-Craiova" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#14532D;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#22C55E;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="1000" fill="url(#bg-Craiova)"/>
+  
+  <!-- Decorative circles -->
+  <circle cx="150" cy="150" r="100" fill="white" opacity="0.05"/>
+  <circle cx="850" cy="850" r="120" fill="white" opacity="0.05"/>
+  <circle cx="850" cy="200" r="80" fill="white" opacity="0.03"/>
+  <circle cx="150" cy="850" r="90" fill="white" opacity="0.03"/>
+  
+  <!-- City icon/emblem (large centered) -->
+  <circle cx="500" cy="400" r="180" fill="white" opacity="0.15" filter="url(#glow)"/>
+  <circle cx="500" cy="400" r="150" fill="white" opacity="0.2"/>
+  
+  <!-- Landmark silhouette -->
+  <g opacity="0.9" fill="white">
+    <path d="M450,280 Q470,220 490,280 M480,240 L480,300 M510,280 Q530,230 550,280 M530,250 L530,300" stroke="white" stroke-width="3" fill="none"/>
+  </g>
+  
+  <!-- City name -->
+  <text x="500" y="680" font-family="Arial, sans-serif" font-size="72" font-weight="bold" 
+        fill="white" text-anchor="middle" filter="url(#glow)">Craiova</text>
+  
+  <!-- Romania label -->
+  <text x="500" y="740" font-family="Arial, sans-serif" font-size="32" font-weight="300" 
+        fill="white" text-anchor="middle" opacity="0.8">România</text>
+  
+  <!-- Icon -->
+  <text x="500" y="430" font-size="100" text-anchor="middle">🌳</text>
+  
+  <!-- Decorative elements -->
+  <circle cx="250" cy="800" r="4" fill="white" opacity="0.6"/>
+  <circle cx="280" cy="820" r="3" fill="white" opacity="0.5"/>
+  <circle cx="310" cy="790" r="5" fill="white" opacity="0.7"/>
+  <circle cx="750" cy="800" r="4" fill="white" opacity="0.6"/>
+  <circle cx="720" cy="820" r="3" fill="white" opacity="0.5"/>
+  <circle cx="690" cy="790" r="5" fill="white" opacity="0.7"/>
+</svg>

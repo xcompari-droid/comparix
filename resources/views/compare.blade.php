@@ -31,7 +31,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <h2 class="text-2xl font-bold mb-2">🏆 Câștigător: {{ $winner->name }}</h2>
-                        <p class="text-emerald-50">Cea mai bună ofertă: {{ number_format($winner->best_price, 2) }} RON</p>
+                        <p class="text-emerald-50">Cea mai bună ofertă: {{ format_number($winner->best_price) }} RON</p>
                     </div>
                     <a href="/oferta/{{ $winner->best_offer_id }}" 
                        target="_blank"
@@ -52,7 +52,7 @@
                             <span class="text-sm font-medium text-gray-700">{{ $product->name }}</span>
                             <span class="text-lg font-bold text-cyan-600">
                                 @if($product->offers->isNotEmpty())
-                                    {{ number_format($product->offers->min('price'), 2) }} RON
+                                    {{ format_number($product->offers->min('price')) }} RON
                                 @else
                                     N/A
                                 @endif
@@ -106,7 +106,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm">
                                     @if($product->offers->isNotEmpty())
                                         <span class="text-lg font-bold text-cyan-600">
-                                            {{ number_format($product->offers->min('price'), 2) }} RON
+                                            {{ format_number($product->offers->min('price')) }} RON
                                         </span>
                                     @else
                                         <span class="text-gray-400">N/A</span>
@@ -130,26 +130,43 @@
 
                         <!-- Specifications from SpecValues -->
                         @php
-                            $allSpecKeys = collect();
+                            // Colectăm toate specificațiile și le grupăm după nume (nu după ID)
+                            $allSpecNames = collect();
                             foreach($products as $product) {
-                                $allSpecKeys = $allSpecKeys->merge($product->specValues->pluck('specKey'));
+                                foreach($product->specValues as $specValue) {
+                                    $allSpecNames->push($specValue->specKey->name);
+                                }
                             }
-                            $allSpecKeys = $allSpecKeys->unique('id');
+                            $allSpecNames = $allSpecNames->unique()->sort()->values();
                         @endphp
 
-                        @foreach($allSpecKeys as $specKey)
+                        @foreach($allSpecNames as $specName)
                             <tr class="{{ $loop->even ? 'bg-gray-50' : 'bg-white' }}">
                                 <td class="px-6 py-4 text-sm font-medium text-gray-900 sticky left-0 {{ $loop->even ? 'bg-gray-50' : 'bg-white' }}">
-                                    {{ $specKey->name }}
+                                    {{ $specName }}
                                 </td>
                                 @foreach($products as $product)
                                     <td class="px-6 py-4 text-sm text-gray-700">
                                         @php
-                                            $specValue = $product->specValues->firstWhere('spec_key_id', $specKey->id);
+                                            $specValue = $product->specValues->first(function($sv) use ($specName) {
+                                                return $sv->specKey->name === $specName;
+                                            });
                                         @endphp
-                                        {{ $specValue->value ?? '-' }}
-                                        @if($specValue && $specValue->unit)
-                                            <span class="text-gray-500">{{ $specValue->unit }}</span>
+                                        @if($specValue)
+                                            @if($specValue->value_string)
+                                                {{ $specValue->value_string }}
+                                            @elseif($specValue->value_number !== null)
+                                                {{ format_number($specValue->value_number) }}
+                                            @elseif($specValue->value_bool !== null)
+                                                {{ $specValue->value_bool ? 'Da' : 'Nu' }}
+                                            @else
+                                                -
+                                            @endif
+                                            @if($specValue->specKey->unit)
+                                                <span class="text-gray-500">{{ $specValue->specKey->unit }}</span>
+                                            @endif
+                                        @else
+                                            -
                                         @endif
                                     </td>
                                 @endforeach
@@ -175,7 +192,7 @@
                                    class="block p-4 bg-gradient-to-r from-cyan-50 to-emerald-50 rounded-lg hover:from-cyan-100 hover:to-emerald-100 transition-colors">
                                     <div class="flex justify-between items-start mb-2">
                                         <span class="font-medium text-gray-900">{{ $offer->store_name }}</span>
-                                        <span class="text-lg font-bold text-cyan-600">{{ number_format($offer->price, 2) }} RON</span>
+                                        <span class="text-lg font-bold text-cyan-600">{{ format_number($offer->price) }} RON</span>
                                     </div>
                                     @if($offer->stock_status)
                                         <span class="text-xs text-green-600">✓ În stoc</span>
