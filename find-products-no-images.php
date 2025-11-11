@@ -12,14 +12,18 @@ echo "  PRODUSE FĂRĂ IMAGINI SAU CU IMAGINI PLACEHOLDER\n";
 echo "═══════════════════════════════════════════════════════════════\n\n";
 
 // Găsim produse fără imagini sau cu placeholder
-$productsNoImages = Product::where(function($query) {
-    $query->whereNull('image_url')
-          ->orWhere('image_url', '')
-          ->orWhere('image_url', 'LIKE', '%placeholder%')
-          ->orWhere('image_url', 'LIKE', '%picsum%')
-          ->orWhere('image_url', 'LIKE', '%dummyimage%')
-          ->orWhere('image_url', 'LIKE', '%via.placeholder%');
-})->limit(100)->get();
+$productsNoImages = Product::where('product_type_id', 9)
+    ->where(function($query) {
+        $query->whereNull('image_url')
+              ->orWhere('image_url', '')
+              ->orWhere('image_url', 'LIKE', '%placeholder%')
+              ->orWhere('image_url', 'LIKE', '%picsum%')
+              ->orWhere('image_url', 'LIKE', '%dummyimage%')
+              ->orWhere('image_url', 'LIKE', '%via.placeholder%')
+              ->orWhere('image_url', 'LIKE', '%ui-avatars.com%');
+    })
+    ->limit(100)
+    ->get();
 
 echo "Găsite: " . $productsNoImages->count() . " produse fără imagini\n\n";
 

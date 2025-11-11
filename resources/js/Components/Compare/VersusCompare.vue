@@ -1,5 +1,9 @@
 <template>
   <div class="max-w-7xl mx-auto px-4 py-8">
+    <!-- Comparix Logo Branding -->
+    <div class="flex justify-center mb-6">
+      <ApplicationLogo class="w-48 h-12" />
+    </div>
     <!-- Header -->
     <div class="text-center mb-12">
       <h1 class="text-5xl font-black text-gray-900 mb-3">
@@ -29,7 +33,7 @@
         </div>
 
         <!-- Product Image -->
-        <div class="aspect-square bg-gray-50 rounded-xl mb-6 flex items-center justify-center overflow-hidden">
+        <div class="aspect-square bg-gray-50 rounded-xl mb-6 flex items-center justify-center overflow-hidden relative">
           <img
             v-if="item.image_url"
             :src="item.image_url"
@@ -37,6 +41,10 @@
             class="max-w-full max-h-full object-contain p-4"
           />
           <div v-else class="text-gray-400 text-6xl">📦</div>
+          <!-- X mark overlay if image is avatar or missing -->
+          <svg v-if="!item.image_url || (item.image_url && item.image_url.includes('ui-avatars.com'))" class="absolute top-2 right-2 w-8 h-8 text-red-500 drop-shadow-lg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
         </div>
 
         <!-- Product Info -->
@@ -156,6 +164,8 @@
 </template>
 
 <script setup>
+
+import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import { computed } from 'vue';
 
 const props = defineProps({
