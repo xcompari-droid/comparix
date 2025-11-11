@@ -1,4 +1,3 @@
-require __DIR__.'/mobile.php';
 <?php
 
 use App\Http\Controllers\CategoryController;
