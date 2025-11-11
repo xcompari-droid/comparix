@@ -96,41 +96,60 @@ export default function MobileLaptopCompare({ items, metrics, title = "Comparaț
       <div id="specs" className="px-3 py-4">
         <div className="text-sm font-medium mb-2">Specificații principale</div>
         <div className="space-y-4">
-          {[
-            {k:'cpu_model', l:'CPU'},
-            {k:'gpu_model', l:'GPU'},
-            {k:'display_size_in', l:'Ecran (inch)'},
-            {k:'display_brightness_nits', l:'Luminozitate (nits)'},
-            {k:'ram_gb', l:'RAM (GB)'},
-            {k:'storage_gb', l:'SSD (GB)'},
-            {k:'battery_wh', l:'Baterie (Wh)'},
-            {k:'weight_kg', l:'Greutate (kg)'}
-          ].map(row => {
-            // Gather values and normalize for bar length
-            const vals = items.map(it => parseNum(it.specs?.[row.k]));
-            // For weight, lower is better; for others, higher is better
-            const better = row.k === 'weight_kg' ? 'lower' : 'higher';
-            const norm = normalize(vals, better);
-            return (
-              <div key={row.k} className="bg-slate-50 rounded-xl p-3">
-                <div className="mb-2 text-[13px] text-slate-600 font-semibold">{row.l}</div>
-                <div className="space-y-2">
-                  {items.map((it, i) => (
-                    <div key={it.id} className="flex items-center gap-3">
-                      <div className="w-24 text-[12px] leading-tight truncate">{it.name}</div>
-                      <div className="flex-1 h-2 rounded-full bg-slate-200 overflow-hidden">
-                        <div className="h-full rounded-full bg-blue-500" style={{ width: `${norm[i]}%` }} />
+          {/* Paletă de culori pentru bare */}
+          {(() => {
+            const barColors = [
+              '#76b900', // verde
+              '#ed1c24', // roșu
+              '#0071c5', // albastru
+              '#f7931e', // portocaliu
+              '#8e44ad', // mov
+              '#16a085', // teal
+              '#e67e22', // orange dark
+              '#2c3e50', // navy
+            ];
+            const specRows = [
+              {k:'cpu_model', l:'CPU'},
+              {k:'gpu_model', l:'GPU'},
+              {k:'display_size_in', l:'Ecran (inch)'},
+              {k:'display_brightness_nits', l:'Luminozitate (nits)'},
+              {k:'ram_gb', l:'RAM (GB)'},
+              {k:'storage_gb', l:'SSD (GB)'},
+              {k:'battery_wh', l:'Baterie (Wh)'},
+              {k:'weight_kg', l:'Greutate (kg)'}
+            ];
+            return specRows.map(row => {
+              const vals = items.map(it => parseNum(it.specs?.[row.k]));
+              const better = row.k === 'weight_kg' ? 'lower' : 'higher';
+              const norm = normalize(vals, better);
+              return (
+                <div key={row.k} className="bg-slate-50 rounded-xl p-3">
+                  <div className="mb-2 text-[13px] text-slate-600 font-semibold">{row.l}</div>
+                  <div className="flex flex-row items-center gap-4">
+                    {items.map((it, i) => (
+                      <div key={it.id} className="flex-1 flex flex-col items-center min-w-[70px]">
+                        <div className="w-full h-3 rounded-full bg-slate-200 overflow-hidden mb-1">
+                          <div
+                            className="h-full rounded-full"
+                            style={{
+                              width: `${norm[i]}%`,
+                              backgroundColor: barColors[i % barColors.length],
+                              transition: 'width 0.5s',
+                            }}
+                          />
+                        </div>
+                        <div className="text-[11px] font-semibold text-center" style={{color: barColors[i % barColors.length]}}>
+                          {it.specs?.[row.k] ?? '—'}
+                          {['ram_gb','storage_gb'].includes(row.k) ? ' GB' : row.k === 'weight_kg' ? ' kg' : row.k === 'display_size_in' ? '”' : row.k === 'display_brightness_nits' ? ' nits' : ''}
+                        </div>
+                        <div className="text-[10px] text-slate-500 text-center mt-0.5">{it.name}</div>
                       </div>
-                      <div className="w-12 text-right text-[12px] font-semibold">
-                        {it.specs?.[row.k] ?? '—'}
-                        {['ram_gb','storage_gb'].includes(row.k) ? ' GB' : row.k === 'weight_kg' ? ' kg' : row.k === 'display_size_in' ? '”' : row.k === 'display_brightness_nits' ? ' nits' : ''}
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            });
+          })()}
         </div>
       </div>
       <div className="sticky bottom-0 z-30 border-t bg-white/90 backdrop-blur px-3 py-2 flex items-center gap-2">
