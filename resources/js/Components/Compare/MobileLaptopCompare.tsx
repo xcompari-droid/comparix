@@ -93,31 +93,37 @@ export default function MobileLaptopCompare({ items, metrics, title = "Comparaț
           </div>
         ))}
       </div>
-      <div id="specs" className="px-3 py-4">
+      <div id="specs" className="px-3 py-4 overflow-x-auto">
         <div className="text-sm font-medium mb-2">Specificații principale</div>
-        <div className="divide-y">
-          {[
-            {k:'cpu_model', l:'CPU'},
-            {k:'gpu_model', l:'GPU'},
-            {k:'display_size_in', l:'Ecran (inch)'},
-            {k:'display_brightness_nits', l:'Luminozitate (nits)'},
-            {k:'ram_gb', l:'RAM (GB)'},
-            {k:'storage_gb', l:'SSD (GB)'},
-            {k:'battery_wh', l:'Baterie (Wh)'},
-            {k:'weight_kg', l:'Greutate (kg)'}
-          ].map(row => (
-            <div key={row.k} className="py-3">
-              <div className="text-[12px] text-slate-500 mb-1">{row.l}</div>
-              <div className="flex gap-3">
+        <table className="min-w-full border rounded-xl bg-white text-sm">
+          <thead>
+            <tr>
+              <th className="text-left p-2 font-semibold text-slate-500 bg-slate-50">Specificație</th>
+              {items.map((it) => (
+                <th key={it.id} className="p-2 font-semibold text-center text-slate-700 bg-slate-50">{it.name}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              {k:'cpu_model', l:'CPU'},
+              {k:'gpu_model', l:'GPU'},
+              {k:'display_size_in', l:'Ecran (inch)'},
+              {k:'display_brightness_nits', l:'Luminozitate (nits)'},
+              {k:'ram_gb', l:'RAM (GB)'},
+              {k:'storage_gb', l:'SSD (GB)'},
+              {k:'battery_wh', l:'Baterie (Wh)'},
+              {k:'weight_kg', l:'Greutate (kg)'}
+            ].map(row => (
+              <tr key={row.k} className="border-t">
+                <td className="p-2 text-slate-500 font-medium">{row.l}</td>
                 {items.map((it) => (
-                  <div key={it.id} className="flex-1 text-sm">
-                    {it.specs?.[row.k] ?? '—'}
-                  </div>
+                  <td key={it.id} className="p-2 text-center">{it.specs?.[row.k] ?? '—'}</td>
                 ))}
-              </div>
-            </div>
-          ))}
-        </div>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
       <div className="sticky bottom-0 z-30 border-t bg-white/90 backdrop-blur px-3 py-2 flex items-center gap-2">
         <a href="#top" className="rounded-lg border px-3 py-2 text-sm">Sus</a>
