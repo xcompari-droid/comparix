@@ -2,6 +2,40 @@
 
 @section('title', $product->name . ' - Comparix')
 
+@section('breadcrumbs')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Acasă",
+      "item": "{{ url('/') }}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Categorii",
+      "item": "{{ url('/categorii') }}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{ $product->productType->category->name }}",
+      "item": "{{ route('categories.show', $product->productType->category->slug) }}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "{{ $product->name }}"
+    }
+  ]
+}
+</script>
+@endsection
+
 @section('content')
 <div class="min-h-screen bg-neutral-50">
     <div class="max-w-6xl mx-auto px-4 py-6">
@@ -29,11 +63,17 @@
             {{-- Product Image --}}
             <div>
                 <div class="bg-white rounded-3xl shadow-sm p-6 lg:p-8">
-                    @if($product->image_url)
-                        <div class="w-full max-w-lg mx-auto">
-                            <img src="{{ $product->image_url }}" 
-                                 alt="{{ $product->name }}" 
-                                 class="w-full h-auto object-contain">
+                    @php
+                        if (!function_exists('product_image_variants')) {
+                            require_once app_path('Helpers/product_image_variants.php');
+                        }
+                        if (!function_exists('normalize_spec_value')) {
+                            require_once app_path('Helpers/normalize_spec.php');
+                        }
+                        $img = product_image_variants($product->image_url);
+                        @php
+                            $value = normalize_spec_value($specValue->value, $specValue->specKey->unit);
+                        @endphp
                         </div>
                     @else
                         <div class="aspect-square flex items-center justify-center bg-neutral-100 rounded-2xl">
@@ -61,15 +101,9 @@
                     @if($product->offers->isNotEmpty())
                         @php
                             $bestOffer = $product->offers->sortBy('price')->first();
+                        @php
+                            $value = normalize_spec_value($specValue->value, $specValue->specKey->unit);
                         @endphp
-                        <div class="flex items-baseline gap-3 mb-6">
-                            <span class="text-3xl lg:text-4xl font-bold text-neutral-900">
-                                {{ format_number($bestOffer->price) }} RON
-                            </span>
-                            <span class="text-xs lg:text-sm text-neutral-500">
-                                cel mai mic preț
-                            </span>
-                        </div>
                     @endif
 
                     {{-- Key Specifications Grid --}}
@@ -84,16 +118,7 @@
                                         {{ $specValue->specKey->name }}
                                     </dt>
                                     <dd class="text-sm font-semibold text-neutral-900">
-                                        @if($specValue->value_string)
-                                            {{ $specValue->value_string }}
-                                        @elseif($specValue->value_number !== null)
-                                            {{ format_number($specValue->value_number) }}
-                                        @elseif($specValue->value_bool !== null)
-                                            {{ $specValue->value_bool ? 'Da' : 'Nu' }}
-                                        @endif
-                                        @if($specValue->specKey->unit)
-                                            <span class="text-xs text-neutral-500 font-normal">{{ $specValue->specKey->unit }}</span>
-                                        @endif
+                                        <x-spec :value="$specValue->value ?? ($specValue->value_string ?? ($specValue->value_number ?? ($specValue->value_bool ? 'Da' : null)))" :unit="$specValue->specKey->unit ?? ''" />
                                     </dd>
                                 </div>
                             @endforeach
@@ -201,16 +226,7 @@
                                         {{ $specValue->specKey->name }}
                                     </td>
                                     <td class="px-6 py-4 text-sm text-neutral-700">
-                                        @if($specValue->value_string)
-                                            {{ $specValue->value_string }}
-                                        @elseif($specValue->value_number !== null)
-                                            {{ format_number($specValue->value_number) }}
-                                        @elseif($specValue->value_bool !== null)
-                                            {{ $specValue->value_bool ? 'Da' : 'Nu' }}
-                                        @endif
-                                        @if($specValue->specKey->unit)
-                                            <span class="text-neutral-500">{{ $specValue->specKey->unit }}</span>
-                                        @endif
+                                        <x-spec :value="$specValue->value ?? ($specValue->value_string ?? ($specValue->value_number ?? ($specValue->value_bool ? 'Da' : null)))" :unit="$specValue->specKey->unit ?? ''" />
                                     </td>
                                 </tr>
                             @endforeach
@@ -232,9 +248,11 @@
                            class="group block bg-white border border-neutral-200 rounded-2xl p-6 hover:border-blue-300 hover:shadow-lg transition-all duration-200">
                             @if($similar->image_url)
                                 <div class="aspect-[4/3] mb-4 bg-neutral-50 rounded-xl overflow-hidden">
-                                    <img src="{{ $similar->image_url }}" 
-                                         alt="{{ $similar->name }}" 
-                                         class="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-200">
+                                    @component('components.lazy-img', [
+                                        'src' => $similar->image_url,
+                                        'alt' => $similar->name,
+                                        'class' => 'object-contain w-24 h-24'
+                                    ])@endcomponent
                                 </div>
                             @else
                                 <div class="aspect-[4/3] mb-4 bg-neutral-100 rounded-xl flex items-center justify-center">
@@ -324,7 +342,7 @@ function toggleFavorite(productId) {
         }
     })
     .then(response => response.json())
-    .then(data => {
+    .then data => {
         const btn = document.getElementById('favorite-btn');
         const text = document.getElementById('favorite-text');
         const icon = document.getElementById('heart-icon');

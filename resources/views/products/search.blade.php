@@ -2,6 +2,28 @@
 
 @section('title', 'Căutare: ' . $query . ' - compariX.ro')
 
+@section('breadcrumbs')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Acasă",
+      "item": "{{ url('/') }}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Căutare"
+    }
+  ]
+}
+</script>
+@endsection
+
 @section('content')
 <div class="bg-gradient-to-b from-gray-50 to-white py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -55,16 +77,18 @@
             <!-- Products Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 @foreach($products as $product)
+                    @php $img = product_image_variants($product->image_url); @endphp
                     <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group">
                         <a href="/produse/{{ $product->id }}" class="block">
                             <!-- Image -->
                             <div class="relative bg-gray-50 aspect-square flex items-center justify-center overflow-hidden">
-                                <img 
-                                    src="{{ $product->image_url }}" 
-                                    alt="{{ $product->name }}"
-                                    class="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
-                                    loading="lazy"
-                                >
+                                @component('components.lazy-img', [
+                                    'src' => $img['src'],
+                                    'srcset' => $img['srcset'],
+                                    'webp' => $img['webp'],
+                                    'alt' => $product->name,
+                                    'class' => 'w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300'
+                                ])@endcomponent
                                 @if($product->score >= 80)
                                     <div class="absolute top-3 right-3 bg-emerald-500 text-white px-3 py-1 rounded-full text-xs font-bold">
                                         Top {{ number_format($product->score, 0) }}

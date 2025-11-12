@@ -2,6 +2,34 @@
 
 @section('title', $category->name . ' - compariX.ro')
 
+@section('breadcrumbs')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Acasă",
+      "item": "{{ url('/') }}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Categorii",
+      "item": "{{ url('/categorii') }}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{ $category->name }}"
+    }
+  ]
+}
+</script>
+@endsection
+
 @section('content')
 <div class="bg-gradient-to-b from-cyan-50 to-white py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -92,20 +120,32 @@
                                     <div class="text-xs text-gray-600 flex justify-between">
                                         <span class="font-medium">{{ $spec->specKey->name ?? 'Unknown' }}:</span>
                                         <span class="text-gray-800">
-                                            @if($spec->value_string)
-                                                {{ $spec->value_string }}
-                                            @elseif($spec->value_number)
-                                                {{ rtrim(rtrim(number_format($spec->value_number, 2, '.', ''), '0'), '.') }}
-                                            @else
-                                                {{ $spec->value_bool ? 'Da' : 'Nu' }}
-                                            @endif
-                                        </span>
-                                    </div>
-                                @endforeach
-                                @if($product->specValues->count() > 5)
-                                    <p class="text-xs text-cyan-600">+{{ $product->specValues->count() - 5 }} mai multe</p>
-                                @endif
-                            </div>
+                                            @php
+                                                if (!function_exists('normalize_spec_value')) {
+                                                    require_once app_path('Helpers/normalize_spec.php');
+                                                }
+                                                $unit = $spec->specKey->unit ?? '';
+                                                $display = null;
+                                                if($spec->value_string) {
+                                                    $display = $spec->value_string;
+                                                } elseif(isset($spec->value_number) && $spec->value_number !== null) {
+                                                    $display = rtrim(rtrim(number_format($spec->value_number, 2, '.', ''), '0'), '.');
+                                                } elseif(isset($spec->value_bool) && $spec->value_bool !== null) {
+                                                    $display = $spec->value_bool ? 'Da' : 'Nu';
+                                                }
+                                                $display = normalize_spec_value($display, $unit);
+                                            @php
+                                                $value = $specValue->value;
+                                                $unit = $specValue->specKey->unit;
+                                                if($value && $unit && stripos($value, $unit) === false) {
+                                                    $value .= ' ' . $unit;
+                                                }
+                                                // Elimină orice secvență de unități duplicate (ex: "cm cm", "kg kg", "L/ciclu L/ciclu", "kWh/100 cicluri kWh/100 cicluri", "cm mm", "dB dB", "RPM RPM")
+                                                $value = preg_replace('/\b([a-zA-ZăâîșțĂÂÎȘȚ0-9\/\.]+)(\s*\1)+\b/u', '$1', $value);
+                                                $value = preg_replace('/\s+/', ' ', $value);
+                                                // Elimină placeholder gen '-', 'N/A'
+                                                if(trim($value) === '-' || stripos($value, 'N/A') !== false) $value = '';
+                                            @endphp
                         @endif
 
                         @if($product->description)

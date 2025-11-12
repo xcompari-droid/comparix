@@ -130,6 +130,9 @@
 
                         <!-- Specifications from SpecValues -->
                         @php
+                            if (!function_exists('normalize_spec_value')) {
+                                require_once app_path('Helpers/normalize_spec.php');
+                            }
                             // Colectăm toate specificațiile și le grupăm după nume (nu după ID)
                             $allSpecNames = collect();
                             foreach($products as $product) {
@@ -151,23 +154,10 @@
                                             $specValue = $product->specValues->first(function($sv) use ($specName) {
                                                 return $sv->specKey->name === $specName;
                                             });
+                                            $unit = $specValue->specKey->unit ?? '';
+                                            $val = $specValue->value ?? ($specValue->value_string ?? ($specValue->value_number ?? ($specValue->value_bool ? 'Da' : null));
                                         @endphp
-                                        @if($specValue)
-                                            @if($specValue->value_string)
-                                                {{ $specValue->value_string }}
-                                            @elseif($specValue->value_number !== null)
-                                                {{ format_number($specValue->value_number) }}
-                                            @elseif($specValue->value_bool !== null)
-                                                {{ $specValue->value_bool ? 'Da' : 'Nu' }}
-                                            @else
-                                                -
-                                            @endif
-                                            @if($specValue->specKey->unit)
-                                                <span class="text-gray-500">{{ $specValue->specKey->unit }}</span>
-                                            @endif
-                                        @else
-                                            -
-                                        @endif
+                                        <x-spec :value="$val" :unit="$unit" />
                                     </td>
                                 @endforeach
                             </tr>

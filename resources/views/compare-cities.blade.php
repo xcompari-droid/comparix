@@ -80,21 +80,21 @@
                 $specs = $product->specValues->keyBy(function($item) {
                     return $item->specKey->slug;
                 });
-                
+
                 $allSpecs[] = $specs;
-                $populations[] = $specs['population']->value_number ?? 0;
-                $areas[] = $specs['surface_km2']->value_number ?? 0;
-                $densities[] = $specs['population_density']->value_number ?? 0;
-                $gdpPerCapita[] = $specs['gdp_per_capita_usd']->value_number ?? 0;
-                $unemployment[] = $specs['unemployment_rate']->value_number ?? 0;
-                $lifeExpectancy[] = $specs['life_expectancy']->value_number ?? 0;
-                $universities[] = $specs['universities_count']->value_number ?? 0;
-                $museums[] = $specs['museums_count']->value_number ?? 0;
-                $greenSpaces[] = $specs['green_spaces_km2']->value_number ?? 0;
-                $airQuality[] = $specs['air_quality_index']->value_number ?? 0;
-                $crimeIndex[] = $specs['crime_index']->value_number ?? 0;
-                $healthcareIndex[] = $specs['healthcare_index']->value_number ?? 0;
-                $trafficIndex[] = $specs['traffic_index']->value_number ?? 0;
+                $populations[] = isset($specs['population']) && $specs['population'] ? ($specs['population']->value_number ?? 0) : 0;
+                $areas[] = isset($specs['surface_km2']) && $specs['surface_km2'] ? ($specs['surface_km2']->value_number ?? 0) : 0;
+                $densities[] = isset($specs['population_density']) && $specs['population_density'] ? ($specs['population_density']->value_number ?? 0) : 0;
+                $gdpPerCapita[] = isset($specs['gdp_per_capita_usd']) && $specs['gdp_per_capita_usd'] ? ($specs['gdp_per_capita_usd']->value_number ?? 0) : 0;
+                $unemployment[] = isset($specs['unemployment_rate']) && $specs['unemployment_rate'] ? ($specs['unemployment_rate']->value_number ?? 0) : 0;
+                $lifeExpectancy[] = isset($specs['life_expectancy']) && $specs['life_expectancy'] ? ($specs['life_expectancy']->value_number ?? 0) : 0;
+                $universities[] = isset($specs['universities_count']) && $specs['universities_count'] ? ($specs['universities_count']->value_number ?? 0) : 0;
+                $museums[] = isset($specs['museums_count']) && $specs['museums_count'] ? ($specs['museums_count']->value_number ?? 0) : 0;
+                $greenSpaces[] = isset($specs['green_spaces_km2']) && $specs['green_spaces_km2'] ? ($specs['green_spaces_km2']->value_number ?? 0) : 0;
+                $airQuality[] = isset($specs['air_quality_index']) && $specs['air_quality_index'] ? ($specs['air_quality_index']->value_number ?? 0) : 0;
+                $crimeIndex[] = isset($specs['crime_index']) && $specs['crime_index'] ? ($specs['crime_index']->value_number ?? 0) : 0;
+                $healthcareIndex[] = isset($specs['healthcare_index']) && $specs['healthcare_index'] ? ($specs['healthcare_index']->value_number ?? 0) : 0;
+                $trafficIndex[] = isset($specs['traffic_index']) && $specs['traffic_index'] ? ($specs['traffic_index']->value_number ?? 0) : 0;
             }
             
             // Calculate winners for each metric (only for 2 cities)

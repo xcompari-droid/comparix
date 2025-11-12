@@ -1,3 +1,30 @@
+// Pagina Cum funcționează
+Route::get('/cum-functioneaza', function() {
+    return view('cum-functioneaza');
+});
+// Rută temporară pentru resetare parolă admin (șterge după folosire!)
+use Illuminate\Support\Facades\Hash;
+Route::get('/reset-admin-pass', function() {
+    $email = request('email');
+    $pass = request('pass');
+    if (!$email || !$pass) return 'Furnizează email și parolă: /reset-admin-pass?email=...&pass=...';
+    $user = \App\Models\User::where('email', $email)->first();
+    if (!$user) return 'User not found';
+    $user->password = Hash::make($pass);
+    $user->save();
+    return 'Parola a fost resetată cu succes pentru ' . $email;
+});
+
+// Rută dedicată pentru login admin cu resetare parolă vizibilă
+Route::get('/admin/login', function () {
+    return inertia('Auth/Login', [
+        'canResetPassword' => true,
+    ]);
+})->name('admin.login');
+
+// Pagini legal: Termeni și Confidențialitate
+Route::view('/termeni', 'legal.terms')->name('terms');
+Route::view('/confidentialitate', 'legal.privacy')->name('privacy');
 
 <?php
 
@@ -11,6 +38,7 @@ use App\Http\Controllers\VersusCompareController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Laravel\Fortify\Fortify;
 
 /*
 |--------------------------------------------------------------------------
@@ -84,4 +112,20 @@ Route::middleware([
     // Price Alerts
     Route::post('/produse/{product}/price-alert', [PriceAlertController::class, 'store'])->name('price-alerts.store');
     Route::delete('/price-alerts/{priceAlert}', [PriceAlertController::class, 'destroy'])->name('price-alerts.destroy');
+});
+
+// Înregistrează rutele Fortify explicit dacă nu apar automat
+Fortify::loginView(function () {
+    return inertia('Auth/Login', [
+        'canResetPassword' => true,
+    ]);
+});
+Fortify::requestPasswordResetLinkView(function () {
+    return inertia('Auth/ForgotPassword');
+});
+Fortify::resetPasswordView(function ($request) {
+    return inertia('Auth/ResetPassword', [
+        'email' => $request->email,
+        'token' => $request->route('token'),
+    ]);
 });

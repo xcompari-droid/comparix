@@ -2,6 +2,28 @@
 
 @section('title', 'Categorii produse - compariX.ro')
 
+@section('breadcrumbs')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Acasă",
+      "item": "{{ url('/') }}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Categorii"
+    }
+  ]
+}
+</script>
+@endsection
+
 @section('content')
 <div class="bg-gradient-to-b from-cyan-50 to-white py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

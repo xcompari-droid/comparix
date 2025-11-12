@@ -4,7 +4,7 @@ import MobileLaptopCompare from '@/Components/Compare/MobileLaptopCompare';
 
 export default function LaptopsMobile(){
   const { props } = usePage();
-  const { items = [], title = 'Comparație laptopuri (mobil)', metrics = [
+  const { items = [], title = '', metrics = [
     { key: 'cpu_score', label: 'CPU', better: 'higher' },
     { key: 'gpu_score', label: 'GPU', better: 'higher' },
     { key: 'display_nits', label: 'Luminozitate', better: 'higher', unit: 'nits' },
